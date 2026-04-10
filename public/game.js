@@ -30,14 +30,26 @@ async function init() {
 
   try {
     const res = await fetch('/api/players');
-    if (!res.ok) throw new Error('Failed to load players');
+    if (!res.ok) {
+      let detail = '';
+      try {
+        const errJson = await res.json();
+        detail = errJson?.detail || errJson?.error || '';
+      } catch {
+        detail = await res.text();
+      }
+      throw new Error(`Failed to load players (${res.status})${detail ? `: ${detail}` : ''}`);
+    }
     PLAYERS = await res.json();
+    if (!Array.isArray(PLAYERS) || PLAYERS.length === 0) {
+      throw new Error('Players list is empty. Check Supabase table data and RLS policy.');
+    }
     document.getElementById('loading').style.display = 'none';
     setupGame();
   } catch (err) {
     document.getElementById('loading').style.display = 'none';
     document.getElementById('guesses-container').innerHTML =
-      `<div id="error-msg">Could not load player data. Please refresh and try again.</div>`;
+      `<div id="error-msg">Could not load player data. ${err.message}</div>`;
     console.error(err);
   }
 }

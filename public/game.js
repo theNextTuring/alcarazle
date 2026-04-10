@@ -31,12 +31,13 @@ async function init() {
   try {
     const res = await fetch('/api/players');
     if (!res.ok) {
-      let detail = '';
+      const raw = await res.text();
+      let detail = raw;
       try {
-        const errJson = await res.json();
-        detail = errJson?.detail || errJson?.error || '';
+        const errJson = JSON.parse(raw);
+        detail = errJson?.detail || errJson?.error || raw;
       } catch {
-        detail = await res.text();
+        // Keep raw text when response is not JSON.
       }
       throw new Error(`Failed to load players (${res.status})${detail ? `: ${detail}` : ''}`);
     }

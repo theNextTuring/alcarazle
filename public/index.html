@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Tennisle — Daily ATP tennis player guessing game. Like Wordle but for tennis." />
+  <title>Tennisle — Guess the ATP Player</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <header>
+      <div>
+        <div id="title">Tennisle</div>
+        <div id="subtitle">Guess today's ATP player in 6 tries</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button id="how-btn" onclick="toggleHow()">How to play</button>
+        <button id="dark-toggle" onclick="toggleDark()">Dark mode</button>
+      </div>
+    </header>
+
+    <div id="how-to" style="display:none">
+      <div class="how-card">
+        <p>Guess the mystery ATP player. Each guess reveals clues:</p>
+        <ul>
+          <li><span class="swatch correct-swatch"></span> <strong>Green</strong> — exact match</li>
+          <li><span class="swatch present-swatch"></span> <strong>Purple</strong> — close (same continent for nation, within 3 for age, within 5 for titles, one tier off for ranking)</li>
+          <li><span class="swatch absent-swatch"></span> <strong>Grey</strong> — wrong</li>
+        </ul>
+        <p>Arrows on numbers show which direction to go. A new player every day.</p>
+      </div>
+    </div>
+
+    <div id="legend">
+      <div class="leg-item"><div class="leg-dot" style="background:var(--correct)"></div>Correct</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--present)"></div>Close / same continent</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--absent)"></div>Wrong</div>
+    </div>
+
+    <div id="search-area">
+      <input id="player-input" type="text" placeholder="Type a player name..." autocomplete="off" />
+      <div id="autocomplete" style="display:none"></div>
+      <button id="guess-btn" disabled>Guess</button>
+    </div>
+
+    <div id="guesses-left">6 guesses remaining</div>
+
+    <div id="col-headers">
+      <div class="col-h">Nation</div>
+      <div class="col-h">Age</div>
+      <div class="col-h">Hand</div>
+      <div class="col-h">Backhand</div>
+      <div class="col-h">Ranking</div>
+      <div class="col-h">Titles</div>
+    </div>
+
+    <div id="guesses-container"></div>
+    <div id="result-banner" style="display:none"></div>
+    <div id="loading" style="text-align:center;padding:2rem;color:var(--text-secondary);font-size:14px;">Loading players...</div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

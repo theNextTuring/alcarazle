@@ -3,7 +3,7 @@
 // Uses RapidAPI tennis-api-atp-wta-itf
 // Updates ranking + career titles for all active players
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) {
     return res.status(401).json({ error: 'Unauthorized' });
   }

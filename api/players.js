@@ -2,7 +2,7 @@
 // Vercel serverless function — returns all players from Supabase
 // Age is calculated live from dob so it never goes stale
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate');
 

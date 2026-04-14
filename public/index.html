@@ -3,16 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Tennisle — Daily ATP tennis player guessing game. Like Wordle but for tennis." />
-  <title>Tennisle — Guess the ATP Player</title>
+  <meta name="description" content="Alcarazle — Daily ATP tennis player guessing game. Like Wordle but for tennis." />
+  <title>Alcarazle — Guess the ATP Player</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div id="app">
     <header>
-      <div>
-        <div id="title">Tennisle</div>
-        <div id="subtitle">Guess today's ATP player in 6 tries</div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div>
+          <div id="title">Alcarazle</div>
+          <div id="subtitle">Guess today's ATP player in 6 tries</div>
+        </div>
+        <span id="mode-badge" style="display:none">Practice</span>
       </div>
       <div style="display:flex;gap:8px;align-items:center;">
         <button id="how-btn" onclick="toggleHow()">How to play</button>
@@ -22,13 +25,14 @@
 
     <div id="how-to" style="display:none">
       <div class="how-card">
-        <p>Guess the mystery ATP player. Each guess reveals clues:</p>
+        <p>Guess the mystery ATP player. Each guess reveals 7 clues:</p>
         <ul>
           <li><span class="swatch correct-swatch"></span> <strong>Green</strong> — exact match</li>
-          <li><span class="swatch present-swatch"></span> <strong>Purple</strong> — close (same continent for nation, within 3 for age, within 5 for titles, one tier off for ranking)</li>
+          <li><span class="swatch present-swatch"></span> <strong>Purple</strong> — close (same continent, within 3 yrs age, within 2 yrs turned pro, within 1 inch height, within 5 titles)</li>
           <li><span class="swatch absent-swatch"></span> <strong>Grey</strong> — wrong</li>
         </ul>
-        <p>Arrows on numbers show which direction to go. A new player every day.</p>
+        <p>Arrows on numbers show which direction to go. New player every day.</p>
+        <p style="margin-top:8px">Want unlimited practice? Go to <strong>alcarazle.com/?practice=1</strong></p>
       </div>
     </div>
 
@@ -51,13 +55,14 @@
       <div class="col-h">Age</div>
       <div class="col-h">Hand</div>
       <div class="col-h">Backhand</div>
-      <div class="col-h">Ranking</div>
+      <div class="col-h">Turned Pro</div>
+      <div class="col-h">Height</div>
       <div class="col-h">Titles</div>
     </div>
 
     <div id="guesses-container"></div>
     <div id="result-banner" style="display:none"></div>
-    <div id="loading" style="text-align:center;padding:2rem;color:var(--text-secondary);font-size:14px;">Loading players...</div>
+    <div id="loading">Loading players...</div>
   </div>
 
   <script src="game.js"></script>

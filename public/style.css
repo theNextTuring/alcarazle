@@ -207,7 +207,7 @@ button:hover { background: var(--bg-secondary); }
 
 #col-headers {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0,1fr));
+  grid-template-columns: repeat(7, minmax(0,1fr));
   gap: 5px;
   margin-bottom: 6px;
 }
@@ -233,7 +233,7 @@ button:hover { background: var(--bg-secondary); }
 
 .guess-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0,1fr));
+  grid-template-columns: repeat(7, minmax(0,1fr));
   gap: 5px;
 }
 
@@ -321,4 +321,15 @@ button:hover { background: var(--bg-secondary); }
   font-size: 14px;
   background: #fdf0ef;
   border-radius: var(--radius-md);
+}
+
+#mode-badge {
+  background: var(--wim-purple);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 99px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }

@@ -19,6 +19,20 @@ function sleep(ms) {
   return new Promise(r => setTimeout(r, ms));
 }
 
+async function fetchWithRetry(url, options = {}, maxAttempts = 5) {
+  let attempt = 0;
+  while (attempt < maxAttempts) {
+    attempt++;
+    const res = await fetch(url, options);
+    if (res.status !== 429) return res;
+
+    // Exponential backoff with jitter for Wikipedia rate limits.
+    const delayMs = Math.min(8000, 400 * (2 ** (attempt - 1))) + Math.floor(Math.random() * 250);
+    await sleep(delayMs);
+  }
+  throw new Error('Wikipedia rate limit persisted after retries (429)');
+}
+
 function normalizeNameForSearch(name) {
   return `${name} tennis`;
 }
@@ -80,7 +94,7 @@ function stripWikiMarkup(value) {
 
 async function wikiSearchTitle(query) {
   const url = `${WIKI_API}?action=query&list=search&srsearch=${encodeURIComponent(query)}&format=json&origin=*`;
-  const res = await fetch(url);
+  const res = await fetchWithRetry(url);
   if (!res.ok) throw new Error(`Wikipedia search failed: ${res.status}`);
   const json = await res.json();
   const results = json?.query?.search || [];
@@ -89,7 +103,7 @@ async function wikiSearchTitle(query) {
 
 async function wikiGetWikitextByTitle(title) {
   const url = `${WIKI_API}?action=query&prop=revisions&rvprop=content&rvslots=main&formatversion=2&format=json&origin=*&titles=${encodeURIComponent(title)}`;
-  const res = await fetch(url);
+  const res = await fetchWithRetry(url);
   if (!res.ok) throw new Error(`Wikipedia page fetch failed: ${res.status}`);
   const json = await res.json();
   const page = json?.query?.pages?.[0];
@@ -108,7 +122,8 @@ module.exports = async function handler(req, res) {
   }
 
   const force = req.query.force === '1';
-  const limit = Math.max(1, Math.min(200, Number.parseInt(req.query.limit || '200', 10) || 200));
+  const limit = Math.max(1, Math.min(200, Number.parseInt(req.query.limit || '40', 10) || 40));
+  const offset = Math.max(0, Number.parseInt(req.query.offset || '0', 10) || 0);
 
   try {
     // Fetch all players (we backfill bios regardless of rapid_id).
@@ -128,6 +143,7 @@ module.exports = async function handler(req, res) {
       ok: true,
       force,
       limit,
+      offset,
       processed: 0,
       updated: 0,
       skipped: [],
@@ -135,7 +151,7 @@ module.exports = async function handler(req, res) {
       changes: [],
     };
 
-    for (const player of players.slice(0, limit)) {
+    for (const player of players.slice(offset, offset + limit)) {
       report.processed++;
 
       try {
@@ -190,8 +206,8 @@ module.exports = async function handler(req, res) {
         report.updated++;
         report.changes.push({ name: player.name, wiki_title: title, ...patch });
 
-        // Be polite to Wikipedia.
-        await sleep(200);
+        // Be polite to Wikipedia to avoid 429 responses.
+        await sleep(650);
       } catch (err) {
         report.errors.push({ name: player.name, error: err.message });
       }

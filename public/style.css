@@ -207,7 +207,7 @@ button:hover { background: var(--bg-secondary); }
 
 #col-headers {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0,1fr));
+  grid-template-columns: repeat(6, minmax(0,1fr));
   gap: 5px;
   margin-bottom: 6px;
 }
@@ -233,7 +233,7 @@ button:hover { background: var(--bg-secondary); }
 
 .guess-grid {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0,1fr));
+  grid-template-columns: repeat(6, minmax(0,1fr));
   gap: 5px;
 }
 

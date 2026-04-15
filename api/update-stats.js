@@ -63,8 +63,9 @@ module.exports = async function handler(req, res) {
         const { data: breakdown } = await titlesRes.json();
 
         const totalTitles = (breakdown || [])
-          .filter(t => TITLE_IDS.has(t.tourRankId))
-          .reduce((sum, t) => sum + parseInt(t.titlesWon || 0), 0);
+          // RapidAPI sometimes returns numeric ids as strings.
+          .filter(t => TITLE_IDS.has(Number(t.tourRankId)))
+          .reduce((sum, t) => sum + Number.parseInt(t.titlesWon || 0, 10), 0);
 
         const newRanking = idToRanking[player.rapid_id] || player.ranking;
 

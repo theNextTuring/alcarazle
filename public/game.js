@@ -207,8 +207,6 @@ function heightLabel(cm) {
 }
 
 function buildCells(g, a) {
-  const proG = g.turned_pro || 0;
-  const proA = a.turned_pro || 0;
   const htG  = g.height_cm  || 0;
   const htA  = a.height_cm  || 0;
   // "Close" on height = within 1 inch = within ~2.54cm; we use 3cm to account for rounding
@@ -219,7 +217,6 @@ function buildCells(g, a) {
     { label:'Age',        val:g.age,            arrow: g.age===a.age?'':g.age<a.age?'▲':'▼',             cls: g.age===a.age?'correct':Math.abs(g.age-a.age)<=3?'present':'absent' },
     { label:'Hand',       val:g.hand,           arrow:'',                                                  cls: g.hand===a.hand?'correct':'absent' },
     { label:'Backhand',   val:g.bh,             arrow:'',                                                  cls: g.bh===a.bh?'correct':'absent' },
-    { label:'Turned Pro', val:proG||'?',        arrow: proG===proA?'':proG<proA?'▲':'▼',                 cls: proG===proA?'correct':Math.abs(proG-proA)<=2?'present':'absent' },
     { label:'Height',     val:heightLabel(htG), arrow: htG===htA?'':htG<htA?'▲':'▼',                    cls: htCls },
     { label:'Titles',     val:g.titles,         arrow: g.titles===a.titles?'':g.titles<a.titles?'▲':'▼', cls: g.titles===a.titles?'correct':Math.abs(g.titles-a.titles)<=5?'present':'absent' },
   ];

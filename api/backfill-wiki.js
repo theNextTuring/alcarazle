@@ -69,12 +69,12 @@ function extractInfoboxParam(wikitext, paramName) {
 function stripWikiMarkup(value) {
   if (!value) return null;
   let v = String(value);
-  v = v.replace(/<ref[^>]*>.*?<\\/ref>/gi, '');
-  v = v.replace(/<ref[^/>]*\\/>/gi, '');
-  v = v.replace(/\\{\\{.*?\\}\\}/g, ''); // remove templates (best-effort)
-  v = v.replace(/\\[\\[(?:[^\\]|]*\\|)?([^\\]]+)\\]\\]/g, '$1'); // [[a|b]] -> b
+  v = v.replace(/<ref[^>]*>.*?<\/ref>/gi, '');
+  v = v.replace(/<ref[^/>]*\/>/gi, '');
+  v = v.replace(/\{\{.*?\}\}/g, ''); // remove templates (best-effort)
+  v = v.replace(/\[\[(?:[^\]|]*\|)?([^\]]+)\]\]/g, '$1'); // [[a|b]] -> b
   v = v.replace(/''+/g, '');
-  v = v.replace(/\\s+/g, ' ').trim();
+  v = v.replace(/\s+/g, ' ').trim();
   return v || null;
 }
 
